@@ -46,7 +46,7 @@ export default function Dashboard() {
           {[
             { name: 'Work', img: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=200&auto=format&fit=crop' },
             { name: 'Gym', img: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?q=80&w=200&auto=format&fit=crop' },
-            { name: 'Date', img: 'https://images.unsplash.com/photo-1555529771-835f59bfc50c?q=80&w=200&auto=format&fit=crop' },
+            { name: 'Date', img: 'https://images.unsplash.com/photo-1627941433145-3ca08bb930f5?q=80&w=200&auto=format&fit=crop' },
             { name: 'Party', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=200&auto=format&fit=crop' },
             { name: 'Travel', img: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=200&auto=format&fit=crop' },
           ].map((occasion) => (
@@ -92,8 +92,8 @@ export default function Dashboard() {
         </div>
         <div className="grid grid-cols-2 gap-4">
           {[
-            { img: 'https://images.unsplash.com/photo-1596755094514-f87e32f85e2c?q=80&w=400&auto=format&fit=crop' },
-            { img: 'https://images.unsplash.com/photo-1594938298596-70f594f742f8?q=80&w=400&auto=format&fit=crop' },
+            { img: 'https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?q=80&w=400&auto=format&fit=crop' },
+            { img: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=400&auto=format&fit=crop' },
             { img: 'https://images.unsplash.com/photo-1559551409-dadc959f76b8?q=80&w=400&auto=format&fit=crop' },
             { img: 'https://images.unsplash.com/photo-1603252109303-2751441dd157?q=80&w=400&auto=format&fit=crop' },
           ].map((outfit, i) => (
