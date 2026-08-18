@@ -2,7 +2,17 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, Shirt, Camera, Users, User, Sparkles } from 'lucide-react';
+import { Home, Shirt, Users, User, Sparkles } from 'lucide-react';
+
+const navItems = [
+  { href: '/dashboard', label: 'Home', icon: Home },
+  { href: '/wardrobe', label: 'Wardrobe', icon: Shirt },
+];
+
+const navItemsRight = [
+  { href: '/community', label: 'Community', icon: Users },
+  { href: '/profile', label: 'Profile', icon: User },
+];
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -12,32 +22,47 @@ export default function BottomNav() {
   }
 
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.08)] py-3 px-6 flex items-center justify-between z-50">
-      <Link href="/dashboard" className="flex flex-col items-center gap-1 text-gray-400 hover:text-espresso transition-colors">
-        <Home size={22} strokeWidth={2} />
-        <span className="text-[10px] font-sans">Home</span>
-      </Link>
-      
-      <Link href="/wardrobe" className="flex flex-col items-center gap-1 text-gray-400 hover:text-espresso transition-colors">
-        <Shirt size={22} strokeWidth={2} />
-        <span className="text-[10px] font-sans">Wardrobe</span>
-      </Link>
-      
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-white rounded-full shadow-[0_8px_30px_rgba(42,35,33,0.12)] border border-sand/60 py-3 px-6 flex items-center justify-between z-50">
+      {navItems.map(({ href, label, icon: Icon }) => {
+        const active = pathname === href;
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`flex flex-col items-center gap-1 transition-colors ${
+              active ? 'text-espresso' : 'text-espresso/35 hover:text-espresso/70'
+            }`}
+          >
+            <Icon size={22} strokeWidth={active ? 2.2 : 1.8} />
+            <span className="text-[10px] font-sans font-medium">{label}</span>
+          </Link>
+        );
+      })}
+
       <div className="relative -top-6">
-        <Link href="/analyzer" className="flex items-center justify-center w-14 h-14 bg-espresso text-white rounded-full shadow-lg shadow-espresso/30 hover:scale-105 transition-transform">
+        <Link
+          href="/analyzer"
+          className="flex items-center justify-center w-14 h-14 bg-espresso text-white rounded-full shadow-lg shadow-espresso/30 hover:scale-105 active:scale-95 transition-transform"
+        >
           <Sparkles size={24} strokeWidth={1.5} />
         </Link>
       </div>
 
-      <Link href="/community" className="flex flex-col items-center gap-1 text-gray-400 hover:text-espresso transition-colors">
-        <Users size={22} strokeWidth={2} />
-        <span className="text-[10px] font-sans">Community</span>
-      </Link>
-
-      <Link href="/profile" className="flex flex-col items-center gap-1 text-gray-400 hover:text-espresso transition-colors">
-        <User size={22} strokeWidth={2} />
-        <span className="text-[10px] font-sans">Profile</span>
-      </Link>
+      {navItemsRight.map(({ href, label, icon: Icon }) => {
+        const active = pathname === href;
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`flex flex-col items-center gap-1 transition-colors ${
+              active ? 'text-espresso' : 'text-espresso/35 hover:text-espresso/70'
+            }`}
+          >
+            <Icon size={22} strokeWidth={active ? 2.2 : 1.8} />
+            <span className="text-[10px] font-sans font-medium">{label}</span>
+          </Link>
+        );
+      })}
     </div>
   );
 }
