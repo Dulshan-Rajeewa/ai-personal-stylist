@@ -5,52 +5,59 @@ import {
   Heart,
   CreditCard,
   Settings,
-  LogOut,
   ChevronRight,
   PencilLine,
 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/server';
+import { getProfile } from '@/lib/actions/profile';
+import LogoutButton from '@/components/LogoutButton';
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const stats = [
-  { value: '8.2', label: 'Avg. Style Score' },
-  { value: '45',  label: 'Wardrobe Items'   },
-];
+// ─── Menu items ───────────────────────────────────────────────────────────────
 
 const menuItems = [
   {
     icon: Sparkles,
     label: 'Style Profile',
-    sublabel: 'Womenswear · Minimalist',
+    sublabel: 'Update your preferences',
     href: '#',
-    danger: false,
   },
   {
     icon: Heart,
     label: 'My Saved Outfits',
     sublabel: null,
     href: '#',
-    danger: false,
   },
   {
     icon: CreditCard,
     label: 'Shopping Budget',
     sublabel: null,
     href: '#',
-    danger: false,
   },
   {
     icon: Settings,
     label: 'App Settings',
     sublabel: null,
     href: '#',
-    danger: false,
   },
 ];
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function Profile() {
+export default async function Profile() {
+  const { profile, wardrobeCount } = await getProfile();
+
+  const firstName = profile?.full_name ?? 'Stylist';
+  const handle = firstName.toLowerCase().replace(/\s+/g, '') + 'styles';
+  const avatarUrl =
+    profile?.avatar_url ??
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=300&auto=format&fit=crop';
+  const avgScore = profile?.avg_style_score ?? 0;
+
+  const stats = [
+    { value: avgScore > 0 ? avgScore.toFixed(1) : '—', label: 'Avg. Style Score' },
+    { value: wardrobeCount.toString(), label: 'Wardrobe Items' },
+  ];
+
   return (
     <div className="min-h-screen bg-[#FDFBF7] pb-28">
 
@@ -61,7 +68,7 @@ export default function Profile() {
       <div className="flex flex-col items-center -mt-14 px-5">
         <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-cream shadow-[0_8px_30px_rgba(42,35,33,0.15)]">
           <Image
-            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=300&auto=format&fit=crop"
+            src={avatarUrl}
             alt="Profile avatar"
             fill
             className="object-cover"
@@ -69,11 +76,11 @@ export default function Profile() {
           />
         </div>
 
-        {/* Name & handle */}
-        <h1 className="font-serif text-2xl font-bold text-espresso mt-4 leading-tight">Jani Doe</h1>
-        <p className="font-sans text-xs text-espresso/40 mt-1 tracking-wide">@janistyles</p>
+        <h1 className="font-serif text-2xl font-bold text-espresso mt-4 leading-tight">
+          {profile?.full_name ?? 'Your Profile'}
+        </h1>
+        <p className="font-sans text-xs text-espresso/40 mt-1 tracking-wide">@{handle}</p>
 
-        {/* Edit pill */}
         <button className="mt-4 flex items-center gap-1.5 border border-espresso/15 rounded-full px-5 py-2 text-[12px] font-sans font-medium text-espresso hover:bg-sand/50 transition-colors">
           <PencilLine size={12} strokeWidth={2} />
           Edit Profile
@@ -84,7 +91,6 @@ export default function Profile() {
       <div className="mx-5 mt-6 bg-white rounded-2xl flex shadow-[0_4px_20px_rgba(42,35,33,0.06)] border border-sand/50 overflow-hidden">
         {stats.map((stat, i) => (
           <div key={stat.label} className="flex-1 relative">
-            {/* Vertical divider between items */}
             {i > 0 && (
               <div className="absolute left-0 top-1/2 -translate-y-1/2 h-10 w-px bg-sand" />
             )}
@@ -113,23 +119,17 @@ export default function Profile() {
                 href={href}
                 className="flex items-center gap-4 px-5 py-4 hover:bg-sand/20 active:bg-sand/40 transition-colors"
               >
-                {/* Icon pill */}
                 <div className="w-9 h-9 rounded-xl bg-sand/60 flex items-center justify-center shrink-0">
                   <Icon size={16} strokeWidth={1.5} className="text-espresso/70" />
                 </div>
-
-                {/* Text */}
                 <div className="flex-1 min-w-0">
                   <p className="font-sans text-sm font-medium text-espresso">{label}</p>
                   {sublabel && (
                     <p className="font-sans text-[11px] text-espresso/40 mt-0.5">{sublabel}</p>
                   )}
                 </div>
-
                 <ChevronRight size={16} strokeWidth={1.5} className="text-espresso/25 shrink-0" />
               </Link>
-
-              {/* Thin divider (not after last) */}
               {i < menuItems.length - 1 && (
                 <div className="mx-5 h-px bg-sand/70" />
               )}
@@ -139,22 +139,13 @@ export default function Profile() {
 
         {/* ── Logout ──────────────────────────────────────────────────── */}
         <div className="mt-3 bg-white rounded-2xl shadow-[0_4px_20px_rgba(42,35,33,0.06)] border border-sand/50 overflow-hidden">
-          <button className="w-full flex items-center gap-4 px-5 py-4 hover:bg-rose-50/60 active:bg-rose-50 transition-colors group">
-            <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
-              <LogOut size={16} strokeWidth={1.5} className="text-rose-400" />
-            </div>
-            <span className="font-sans text-sm font-medium text-rose-400 group-hover:text-rose-500 transition-colors">
-              Log Out
-            </span>
-          </button>
+          <LogoutButton />
         </div>
 
-        {/* ── Version tag ─────────────────────────────────────────────── */}
         <p className="text-center font-sans text-[10px] text-espresso/25 mt-6">
           AI Personal Stylist · v1.0.0
         </p>
       </div>
-
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import BottomNav from "@/components/BottomNav";
+import { Toaster } from "sonner";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -34,6 +35,19 @@ export default function RootLayout({
           {children}
         </main>
         <BottomNav />
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            style: {
+              background: '#2A2321',
+              color: '#FDFBF7',
+              border: '1px solid rgba(241,233,221,0.15)',
+              fontFamily: 'var(--font-inter)',
+              fontSize: '13px',
+              borderRadius: '16px',
+            },
+          }}
+        />
       </body>
     </html>
   );
